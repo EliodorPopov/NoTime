@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="false"
+    android:background="@android:color/white"
+    android:clipChildren="false"
+    android:measureAllChildren="true"
+    tools:context=".FullscreenActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chat_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:background="#082638"
+        android:focusableInTouchMode="true"
+        android:persistentDrawingCache="all"
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <EditText
+        android:id="@+id/message_input_field"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|start"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="100dp"
+        android:autofillHints="@string/enter_message_hint"
+        android:background="@android:color/white"
+        android:ems="10"
+        android:foregroundGravity="bottom"
+        android:hint="@string/enter_message_hint"
+        android:inputType="textPersonName"
+        android:overScrollMode="never"
+        android:saveEnabled="false"
+        android:textColor="#1A237E"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/send_button"
+        android:layout_width="100dp"
+        android:layout_height="51dp"
+        android:layout_gravity="bottom|end"
+        android:text="@string/send_button"
+        android:textSize="14sp"
+        android:paddingTop="5dp"
+        android:background="@color/colorPrimary"
+        />
+
+
+</FrameLayout>
