@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.notime.ui.messages
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
@@ -6,15 +6,23 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import com.example.notime.R
+import com.example.notime.data.Message
+import com.example.notime.utilities.InjectorUtils
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
+import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.chat_message_incoming.*
 import kotlinx.android.synthetic.main.home_screen.*
 import kotlinx.android.synthetic.main.chat_message_incoming.view.*
-import java.lang.Exception
+import java.lang.StringBuilder
 
 class HomeScreen : AppCompatActivity() {
 
@@ -23,8 +31,25 @@ class HomeScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_screen)
-
         var adapter = GroupAdapter<ViewHolder>()
+        initializeUi(adapter)
+    }
+
+    private fun initializeUi(adapter: GroupAdapter<ViewHolder>) {
+        val factory = InjectorUtils.provideMessagesViewModelFactory()
+        val viewModel = ViewModelProviders.of(this, factory)
+            .get(MessagesViewModel::class.java)
+
+        viewModel.getMessages().observe(this, Observer { messages ->
+            messages.forEach{message ->
+                adapter.add(ChatIncomingItem(message.toString()))
+            }
+        })
+
+        send_button.setOnClickListener {
+            val message = Message(message_input_field.text.toString())
+        }
+
         chat_view.adapter = adapter
 
         hubConnection = HubConnectionBuilder.create("http://10.0.2.2:5000/chathub").build();
@@ -52,7 +77,6 @@ class HomeScreen : AppCompatActivity() {
 
             chat_view.smoothScrollToPosition(adapter.itemCount - 1);
         }
-
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
